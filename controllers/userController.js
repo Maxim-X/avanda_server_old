@@ -9,7 +9,7 @@ const generateJwt = (id, name, company,roleId, role) => {
 
 class UserController {
     async reg(req, res, next){
-        const {name, email, password} = req.body;
+        // const {name, email, password} = req.body;
         // if (!name || !email || !password){
         //     return next(ApiError.badRequest("Incorrect data entered"));
         // }
@@ -21,7 +21,7 @@ class UserController {
         // const user = await User.create({name, email, password: hashPassword});
         // const token = generateJwt(user.id, name, email);
         // return res.json({token});
-        return res.json({email});
+        return res.json({"Success": true});
     }
 
     async login(req, res, next){
