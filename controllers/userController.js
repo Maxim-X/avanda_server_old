@@ -10,18 +10,18 @@ const generateJwt = (id, name, company,roleId, role) => {
 class UserController {
     async reg(req, res, next){
         const {name, email, password} = req.body;
-        if (!name || !email || !password){
-            return next(ApiError.badRequest("Incorrect data entered"));
-        }
-        const candidate = await User.findOne({where: {email}});
-        if (candidate){
-            return next(ApiError.badRequest("User with this email already exists"));
-        }
-        const hashPassword = await bcrypt.hash(password, 5);
-        const user = await User.create({name, email, password: hashPassword});
-        const token = generateJwt(user.id, name, email);
-        return res.json({token});
-
+        // if (!name || !email || !password){
+        //     return next(ApiError.badRequest("Incorrect data entered"));
+        // }
+        // const candidate = await User.findOne({where: {email}});
+        // if (candidate){
+        //     return next(ApiError.badRequest("User with this email already exists"));
+        // }
+        // const hashPassword = await bcrypt.hash(password, 5);
+        // const user = await User.create({name, email, password: hashPassword});
+        // const token = generateJwt(user.id, name, email);
+        // return res.json({token});
+        return res.json({email});
     }
 
     async login(req, res, next){
