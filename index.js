@@ -18,8 +18,8 @@ app.use(express.static(path.resolve(__dirname, 'static', 'images')))
 app.use(fileUpload({}));
 app.use('/api', router);
 
-
 app.use(errorHandler);
+
 if (process.env.NODE_ENV === "production"){
     app.use(express.static('build'));
     app.get('*', (req, res) => {
