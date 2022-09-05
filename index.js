@@ -4,10 +4,11 @@ const sequelize = require('./db');
 const models = require('./models/models');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || config.get('serverPort');
 const router = require('./routes/index');
 const path = require('path')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');
+const {config} = require("dotenv");
 
 const app = express();
 
