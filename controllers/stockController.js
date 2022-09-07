@@ -11,7 +11,7 @@ const checkAccessCompanyMiddleware = require("../middleware/checkAccessCompanyMi
 
 class StockController{
     async create(req, res, next){
-        let {name, vendor_code, inventory_number, rentalPointId, rentalCategoryId, rentalStatusId, note, inspectionDate, oilChangeDate} = req.body.inventory;
+        let {name, vendor_code, inventory_number, rentalPointId, rentalCategoryId, rentalStatusId, note, inspectionDate, oilChangeDate, price, datePurchase} = req.body.inventory;
         const id_company = req.user.company.id;
 
         name = name.trim();
@@ -20,6 +20,7 @@ class StockController{
         note = note.trim();
         inspectionDate = inspectionDate.trim();
         oilChangeDate = oilChangeDate.trim();
+        price = parseFloat(price);
 
         if (!name || name.length == 0){
             return next(ApiError.badRequest("Name not specified"));
@@ -69,6 +70,9 @@ class StockController{
         if (!oilChangeDate || oilChangeDate.length == 0){
             oilChangeDate = null;
         }
+        if (!datePurchase || datePurchase.length == 0){
+            datePurchase = null;
+        }
 
         const add_inventory = await Stock.create(
             {
@@ -81,14 +85,16 @@ class StockController{
                 rentalStatusId,
                 note,
                 inspection_date:inspectionDate,
-                oil_change:oilChangeDate
+                oil_change:oilChangeDate,
+                price,
+                date_purchase:datePurchase,
             });
 
         return res.json({status: true, message:"Inventory added", inventory_id: add_inventory.id});
     }
 
     async edit(req, res, next){
-        let {id, name, vendor_code, inventory_number, rentalPointId, rentalCategoryId, rentalStatusId, note, inspectionDate, oilChangeDate} = req.body.inventory;
+        let {id, name, vendor_code, inventory_number, rentalPointId, rentalCategoryId, rentalStatusId, note, inspectionDate, oilChangeDate, price, datePurchase} = req.body.inventory;
         let {id_inventory} = req.body;
         const id_company = req.user.company.id;
         if(id != null) id = id.trim();
@@ -98,6 +104,7 @@ class StockController{
         if(note != null) note = note.trim();
         if(inspectionDate != null) inspectionDate = inspectionDate.trim();
         if(oilChangeDate != null) oilChangeDate = oilChangeDate.trim();
+        if(price != null) price = parseFloat(price);
         if (!name || name.length == 0){
             return next(ApiError.badRequest("Name not specified"));
         }
@@ -146,6 +153,9 @@ class StockController{
         if (!oilChangeDate || oilChangeDate.length == 0){
             oilChangeDate = null;
         }
+        if (!datePurchase || datePurchase.length == 0){
+            datePurchase = null;
+        }
 
         stock.set({
             name,
@@ -157,7 +167,9 @@ class StockController{
             rentalStatusId,
             note,
             inspection_date:inspectionDate,
-            oil_change:oilChangeDate
+            oil_change:oilChangeDate,
+            date_purchase:datePurchase,
+            price,
         });
 
         const save = await stock.save();
